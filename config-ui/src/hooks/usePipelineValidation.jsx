@@ -62,9 +62,9 @@ function usePipelineValidation ({
     const errs = []
     console.log('>> VALIDATING PIPELINE RUN ', pipelineName)
 
-    if (!pipelineName || pipelineName.length <= 2) {
-      errs.push('Name: Enter a valid Pipeline Name')
-    }
+    // if (!pipelineName || pipelineName.length <= 2) {
+    //   errs.push('Name: Enter a valid Pipeline Name')
+    // }
 
     if (enabledProviders.includes(Providers.GITLAB) && (!projectId || projectId.length !== 1 || projectId.toString() === '')) {
       errs.push('GitLab: Enter one valid Project ID (Numeric)')
