@@ -83,7 +83,7 @@ func TestDataConvertorExecute(t *testing.T) {
 	)
 
 	fortypeTimes := 0
-	gf := gomonkey.ApplyMethod(reflect.TypeOf(&BatchSaveDivider{}), "ForType", func(d *BatchSaveDivider, rowType reflect.Type) (*BatchSave, error) {
+	gf := gomonkey.ApplyMethod(reflect.TypeOf(&BatchSaveDivider{}), "ForType", func(d *BatchSaveDivider, rowType reflect.Type, log logger.Logger) (*BatchSave, error) {
 		fortypeTimes++
 		assert.Equal(t, rowType, reflect.TypeOf(TestTableData))
 		err := d.onNewBatchSave(rowType)
@@ -144,7 +144,7 @@ func TestDataConvertorExecute_Cancel(t *testing.T) {
 	)
 
 	fortypeTimes := 0
-	gf := gomonkey.ApplyMethod(reflect.TypeOf(&BatchSaveDivider{}), "ForType", func(d *BatchSaveDivider, rowType reflect.Type) (*BatchSave, error) {
+	gf := gomonkey.ApplyMethod(reflect.TypeOf(&BatchSaveDivider{}), "ForType", func(d *BatchSaveDivider, rowType reflect.Type, log logger.Logger) (*BatchSave, error) {
 		fortypeTimes++
 		assert.Equal(t, rowType, reflect.TypeOf(TestTableData))
 		err := d.onNewBatchSave(rowType)
