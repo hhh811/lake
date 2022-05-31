@@ -19,6 +19,7 @@ package main
 
 import (
 	"fmt"
+	"github.com/apache/incubator-devlake/logger"
 
 	"github.com/apache/incubator-devlake/migration"
 	"github.com/apache/incubator-devlake/plugins/core"
@@ -40,7 +41,7 @@ var _ core.Migratable = (*Jenkins)(nil)
 
 type Jenkins struct{}
 
-func (plugin Jenkins) Init(config *viper.Viper, logger core.Logger, db *gorm.DB) error {
+func (plugin Jenkins) Init(config *viper.Viper, logger logger.Logger, db *gorm.DB) error {
 	return nil
 }
 

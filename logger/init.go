@@ -20,8 +20,6 @@ package logger
 import (
 	"fmt"
 	"github.com/apache/incubator-devlake/config"
-	"github.com/apache/incubator-devlake/plugins/core"
-	"github.com/apache/incubator-devlake/plugins/helper"
 	"github.com/sirupsen/logrus"
 	prefixed "github.com/x-cray/logrus-prefixed-formatter"
 	"os"
@@ -29,7 +27,7 @@ import (
 )
 
 var inner *logrus.Logger
-var Global core.Logger
+var Global Logger
 
 func init() {
 	inner = logrus.New()
@@ -54,5 +52,5 @@ func init() {
 		inner.Info(fmt.Sprintf("failed to create dir logs: %s", err))
 	}
 	loggerPool := make(map[string]*logrus.Logger)
-	Global = helper.NewDefaultLogger(inner, "", loggerPool)
+	Global = NewDefaultLogger(inner, "", loggerPool)
 }

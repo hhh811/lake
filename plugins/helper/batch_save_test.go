@@ -18,6 +18,7 @@ limitations under the License.
 package helper
 
 import (
+	"github.com/apache/incubator-devlake/logger"
 	"reflect"
 	"testing"
 
@@ -157,7 +158,7 @@ func TestBatchSave(t *testing.T) {
 
 	TestBatchSize = 1
 	rowType := reflect.TypeOf(TestTableData)
-	batch, err := NewBatchSave(db, rowType, TestBatchSize)
+	batch, err := NewBatchSave(db, logger.Global, rowType, TestBatchSize)
 
 	// test diff type
 	assert.Equal(t, err, nil)

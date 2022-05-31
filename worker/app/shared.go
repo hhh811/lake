@@ -21,13 +21,12 @@ import (
 	"bytes"
 
 	"github.com/apache/incubator-devlake/logger"
-	"github.com/apache/incubator-devlake/plugins/core"
 	"github.com/apache/incubator-devlake/runner"
 	"github.com/spf13/viper"
 	"gorm.io/gorm"
 )
 
-func loadResources(configJson []byte) (*viper.Viper, core.Logger, *gorm.DB, error) {
+func loadResources(configJson []byte) (*viper.Viper, logger.Logger, *gorm.DB, error) {
 	// prepare
 	cfg := viper.New()
 	cfg.SetConfigType("json")

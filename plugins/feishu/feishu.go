@@ -18,6 +18,7 @@ limitations under the License.
 package main
 
 import (
+	"github.com/apache/incubator-devlake/logger"
 	"github.com/apache/incubator-devlake/migration"
 	"github.com/apache/incubator-devlake/plugins/core"
 	"github.com/apache/incubator-devlake/plugins/feishu/models/migrationscripts"
@@ -37,7 +38,7 @@ var _ core.Migratable = (*Feishu)(nil)
 
 type Feishu struct{}
 
-func (plugin Feishu) Init(config *viper.Viper, logger core.Logger, db *gorm.DB) error {
+func (plugin Feishu) Init(config *viper.Viper, logger logger.Logger, db *gorm.DB) error {
 	return nil
 }
 

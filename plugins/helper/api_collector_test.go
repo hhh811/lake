@@ -23,6 +23,7 @@ import (
 	"database/sql"
 	"encoding/json"
 	"fmt"
+	"github.com/apache/incubator-devlake/logger"
 	"io/ioutil"
 	"net/http"
 	"net/url"
@@ -268,7 +269,7 @@ func CreateTestApiCollector() (*ApiCollector, error) {
 	return NewApiCollector(ApiCollectorArgs{
 		RawDataSubTaskArgs: RawDataSubTaskArgs{
 			Ctx: &DefaultSubTaskContext{
-				defaultExecContext: newDefaultExecContext(GetConfigForTest("../../"), NewDefaultLogger(logrus.New(), "Test", make(map[string]*logrus.Logger)), db, ctx, "Test", nil, nil),
+				defaultExecContext: newDefaultExecContext(GetConfigForTest("../../"), logger.NewDefaultLogger(logrus.New(), "Test", make(map[string]*logrus.Logger)), db, ctx, "Test", nil, nil),
 			},
 			Table: TestTable{}.TableName(),
 			Params: &TestParam{
@@ -1096,7 +1097,7 @@ func TestExecute_Total(t *testing.T) {
 	})
 	defer gs.Reset()
 
-	gin := gomonkey.ApplyMethod(reflect.TypeOf(&DefaultLogger{}), "Info", func(_ *DefaultLogger, _ string, _ ...interface{}) {
+	gin := gomonkey.ApplyMethod(reflect.TypeOf(&logger.DefaultLogger{}), "Info", func(_ *logger.DefaultLogger, _ string, _ ...interface{}) {
 	})
 	defer gin.Reset()
 

@@ -18,6 +18,7 @@ limitations under the License.
 package impl
 
 import (
+	"github.com/apache/incubator-devlake/logger"
 	"github.com/apache/incubator-devlake/migration"
 	"github.com/apache/incubator-devlake/plugins/core"
 	"github.com/apache/incubator-devlake/plugins/gitlab/api"
@@ -36,7 +37,7 @@ var _ core.Migratable = (*Gitlab)(nil)
 
 type Gitlab string
 
-func (plugin Gitlab) Init(config *viper.Viper, logger core.Logger, db *gorm.DB) error {
+func (plugin Gitlab) Init(config *viper.Viper, logger logger.Logger, db *gorm.DB) error {
 	return nil
 }
 
@@ -116,7 +117,7 @@ func (plugin Gitlab) ApiResources() map[string]map[string]core.ApiResourceHandle
 			"GET": api.ListConnections,
 		},
 		"connections/:connectionId": {
-			"GET": api.GetConnection,
+			"GET":   api.GetConnection,
 			"PATCH": api.PatchConnection,
 		},
 	}

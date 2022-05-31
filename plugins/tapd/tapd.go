@@ -19,6 +19,7 @@ package main
 
 import (
 	"fmt"
+	"github.com/apache/incubator-devlake/logger"
 	"time"
 
 	"github.com/apache/incubator-devlake/migration"
@@ -43,7 +44,7 @@ var _ core.Migratable = (*Tapd)(nil)
 
 type Tapd struct{}
 
-func (plugin Tapd) Init(config *viper.Viper, logger core.Logger, db *gorm.DB) error {
+func (plugin Tapd) Init(config *viper.Viper, logger logger.Logger, db *gorm.DB) error {
 	api.Init(config, logger, db)
 	return nil
 }

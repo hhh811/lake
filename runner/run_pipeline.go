@@ -18,17 +18,17 @@ limitations under the License.
 package runner
 
 import (
+	"github.com/apache/incubator-devlake/logger"
 	"time"
 
 	"github.com/apache/incubator-devlake/models"
-	"github.com/apache/incubator-devlake/plugins/core"
 	"github.com/spf13/viper"
 	"gorm.io/gorm"
 )
 
 func RunPipeline(
 	cfg *viper.Viper,
-	log core.Logger,
+	log logger.Logger,
 	db *gorm.DB,
 	pipelineId uint64,
 	runTasks func([]uint64) error,

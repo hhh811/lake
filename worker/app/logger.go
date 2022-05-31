@@ -19,22 +19,22 @@ package app
 
 import (
 	"fmt"
+	"github.com/apache/incubator-devlake/logger"
 
-	"github.com/apache/incubator-devlake/plugins/core"
 	"go.temporal.io/sdk/log"
 )
 
 type TemporalLogger struct {
-	log core.Logger
+	log logger.Logger
 }
 
-func NewTemporalLogger(log core.Logger) log.Logger {
+func NewTemporalLogger(log logger.Logger) log.Logger {
 	return &TemporalLogger{
 		log,
 	}
 }
 
-func (l *TemporalLogger) Log(lv core.LogLevel, msg string, keyvals ...interface{}) {
+func (l *TemporalLogger) Log(lv logger.LogLevel, msg string, keyvals ...interface{}) {
 	if l.log.IsLevelEnabled(lv) {
 		for i := 0; i < len(keyvals); i += 2 {
 			msg += fmt.Sprintf(" %s %v", keyvals[i], keyvals[i+1])
@@ -44,19 +44,19 @@ func (l *TemporalLogger) Log(lv core.LogLevel, msg string, keyvals ...interface{
 }
 
 func (l *TemporalLogger) Debug(msg string, keyvals ...interface{}) {
-	l.Log(core.LOG_DEBUG, msg, keyvals...)
+	l.Log(logger.LOG_DEBUG, msg, keyvals...)
 }
 
 func (l *TemporalLogger) Info(msg string, keyvals ...interface{}) {
 
-	l.Log(core.LOG_INFO, msg, keyvals...)
+	l.Log(logger.LOG_INFO, msg, keyvals...)
 }
 
 func (l *TemporalLogger) Warn(msg string, keyvals ...interface{}) {
 
-	l.Log(core.LOG_WARN, msg, keyvals...)
+	l.Log(logger.LOG_WARN, msg, keyvals...)
 }
 
 func (l *TemporalLogger) Error(msg string, keyvals ...interface{}) {
-	l.Log(core.LOG_ERROR, msg, keyvals...)
+	l.Log(logger.LOG_ERROR, msg, keyvals...)
 }

@@ -20,6 +20,7 @@ package helper
 import (
 	"context"
 	"fmt"
+	logger2 "github.com/apache/incubator-devlake/logger"
 	"sync"
 	"sync/atomic"
 	"time"
@@ -35,7 +36,7 @@ import (
 // shared by TasContext and SubTaskContext
 type defaultExecContext struct {
 	cfg      *viper.Viper
-	logger   core.Logger
+	logger   logger2.Logger
 	db       *gorm.DB
 	ctx      context.Context
 	name     string
@@ -48,7 +49,7 @@ type defaultExecContext struct {
 
 func newDefaultExecContext(
 	cfg *viper.Viper,
-	logger core.Logger,
+	logger logger2.Logger,
 	db *gorm.DB,
 	ctx context.Context,
 	name string,
@@ -86,7 +87,7 @@ func (c *defaultExecContext) GetData() interface{} {
 	return c.data
 }
 
-func (c *defaultExecContext) GetLogger() core.Logger {
+func (c *defaultExecContext) GetLogger() logger2.Logger {
 	return c.logger
 }
 
@@ -176,7 +177,7 @@ func (c *DefaultSubTaskContext) IncProgress(quantity int) {
 
 func NewDefaultTaskContext(
 	cfg *viper.Viper,
-	logger core.Logger,
+	logger logger2.Logger,
 	db *gorm.DB,
 	ctx context.Context,
 	name string,
@@ -219,7 +220,7 @@ func (c *DefaultTaskContext) SubTaskContext(subtask string) (core.SubTaskContext
 // going through the usual workflow.
 func NewStandaloneSubTaskContext(
 	cfg *viper.Viper,
-	logger core.Logger,
+	logger logger2.Logger,
 	db *gorm.DB,
 	ctx context.Context,
 	name string,

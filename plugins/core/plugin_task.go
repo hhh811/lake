@@ -19,6 +19,7 @@ package core
 
 import (
 	"context"
+	"github.com/apache/incubator-devlake/logger"
 
 	"gorm.io/gorm"
 )
@@ -47,7 +48,7 @@ type ExecContext interface {
 	GetConfig(name string) string
 	GetDb() *gorm.DB
 	GetContext() context.Context
-	GetLogger() Logger
+	GetLogger() logger.Logger
 	GetData() interface{}
 	SetProgress(current int, total int)
 	IncProgress(quantity int)

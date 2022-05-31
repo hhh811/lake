@@ -15,11 +15,10 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-package helper
+package logger
 
 import (
 	"fmt"
-	"github.com/apache/incubator-devlake/plugins/core"
 	"github.com/sirupsen/logrus"
 	"io"
 	"os"
@@ -38,14 +37,14 @@ func NewDefaultLogger(log *logrus.Logger, prefix string, loggerPool map[string]*
 	return newDefaultLogger
 }
 
-func (l *DefaultLogger) IsLevelEnabled(level core.LogLevel) bool {
+func (l *DefaultLogger) IsLevelEnabled(level LogLevel) bool {
 	if l.log == nil {
 		return false
 	}
 	return l.log.IsLevelEnabled(logrus.Level(level))
 }
 
-func (l *DefaultLogger) Log(level core.LogLevel, format string, a ...interface{}) {
+func (l *DefaultLogger) Log(level LogLevel, format string, a ...interface{}) {
 	if l.IsLevelEnabled(level) {
 		msg := fmt.Sprintf(format, a...)
 		if l.prefix != "" {
@@ -56,27 +55,27 @@ func (l *DefaultLogger) Log(level core.LogLevel, format string, a ...interface{}
 }
 
 func (l *DefaultLogger) Printf(format string, a ...interface{}) {
-	l.Log(core.LOG_INFO, format, a...)
+	l.Log(LOG_INFO, format, a...)
 }
 
 func (l *DefaultLogger) Debug(format string, a ...interface{}) {
-	l.Log(core.LOG_DEBUG, format, a...)
+	l.Log(LOG_DEBUG, format, a...)
 }
 
 func (l *DefaultLogger) Info(format string, a ...interface{}) {
-	l.Log(core.LOG_INFO, format, a...)
+	l.Log(LOG_INFO, format, a...)
 }
 
 func (l *DefaultLogger) Warn(format string, a ...interface{}) {
-	l.Log(core.LOG_WARN, format, a...)
+	l.Log(LOG_WARN, format, a...)
 }
 
 func (l *DefaultLogger) Error(format string, a ...interface{}) {
-	l.Log(core.LOG_ERROR, format, a...)
+	l.Log(LOG_ERROR, format, a...)
 }
 
 // bind two writer to logger
-func (l *DefaultLogger) Nested(name string) core.Logger {
+func (l *DefaultLogger) Nested(name string) Logger {
 	writerStd := os.Stdout
 	fileName := ""
 	loggerPrefixRegex := regexp.MustCompile(`(\[task #\d+]\s\[\w+])`)
@@ -103,4 +102,4 @@ func (l *DefaultLogger) Nested(name string) core.Logger {
 	return NewDefaultLogger(newLog, fmt.Sprintf("%s [%s]", l.prefix, name), l.loggerPool)
 }
 
-var _ core.Logger = (*DefaultLogger)(nil)
+var _ Logger = (*DefaultLogger)(nil)

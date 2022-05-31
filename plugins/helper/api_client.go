@@ -22,6 +22,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	logger2 "github.com/apache/incubator-devlake/logger"
 	"io"
 	"io/ioutil"
 	"net/http"
@@ -31,7 +32,6 @@ import (
 	"time"
 	"unicode/utf8"
 
-	"github.com/apache/incubator-devlake/plugins/core"
 	"github.com/apache/incubator-devlake/utils"
 )
 
@@ -46,7 +46,7 @@ type ApiClient struct {
 	beforeRequest ApiClientBeforeRequest
 	afterReponse  ApiClientAfterResponse
 	ctx           context.Context
-	logger        core.Logger
+	logger        logger2.Logger
 }
 
 func NewApiClient(
@@ -143,7 +143,7 @@ func (apiClient *ApiClient) SetProxy(proxyUrl string) error {
 	return nil
 }
 
-func (apiClient *ApiClient) SetLogger(logger core.Logger) {
+func (apiClient *ApiClient) SetLogger(logger logger2.Logger) {
 	apiClient.logger = logger
 }
 

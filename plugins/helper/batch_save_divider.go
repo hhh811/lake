@@ -18,7 +18,7 @@ limitations under the License.
 package helper
 
 import (
-	"github.com/apache/incubator-devlake/plugins/core"
+	"github.com/apache/incubator-devlake/logger"
 	"reflect"
 
 	"gorm.io/gorm"
@@ -48,7 +48,7 @@ func (d *BatchSaveDivider) OnNewBatchSave(cb OnNewBatchSave) {
 }
 
 // return *BatchSave for specified type
-func (d *BatchSaveDivider) ForType(rowType reflect.Type, log core.Logger) (*BatchSave, error) {
+func (d *BatchSaveDivider) ForType(rowType reflect.Type, log logger.Logger) (*BatchSave, error) {
 	// get the cache for the specific type
 	batch := d.batches[rowType]
 	var err error

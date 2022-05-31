@@ -18,7 +18,7 @@ limitations under the License.
 package api
 
 import (
-	"github.com/apache/incubator-devlake/plugins/core"
+	"github.com/apache/incubator-devlake/logger"
 	"github.com/spf13/viper"
 	"gorm.io/gorm"
 )
@@ -26,7 +26,7 @@ import (
 var db *gorm.DB
 var cfg *viper.Viper
 
-func Init(config *viper.Viper, logger core.Logger, database *gorm.DB) {
+func Init(config *viper.Viper, logger logger.Logger, database *gorm.DB) {
 	db = database
 	cfg = config
 }

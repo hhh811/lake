@@ -19,7 +19,7 @@ package helper
 
 import (
 	"fmt"
-	"github.com/apache/incubator-devlake/plugins/core"
+	logger2 "github.com/apache/incubator-devlake/logger"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
 	"reflect"
@@ -35,18 +35,18 @@ type BatchSave struct {
 	// I'm guessing the reason is the type information lost when converted to interface{}
 	slots      reflect.Value
 	db         *gorm.DB
-	logger     core.Logger
+	logger     logger2.Logger
 	current    int
 	size       int
 	valueIndex map[string]int
 }
 
-func NewBatchSave(db *gorm.DB, log core.Logger, slotType reflect.Type, size int) (*BatchSave, error) {
+func NewBatchSave(db *gorm.DB, log logger2.Logger, slotType reflect.Type, size int) (*BatchSave, error) {
 	if slotType.Kind() != reflect.Ptr {
 		return nil, fmt.Errorf("slotType must be a pointer")
 	}
 	if !hasPrimaryKey(slotType) {
-		return nil, fmt.Errorf("no primary key")
+		return nil, fmt.Errorf("%s no primary key", slotType.String())
 	}
 	log = log.Nested(slotType.String())
 	log.Info("create batch save success")

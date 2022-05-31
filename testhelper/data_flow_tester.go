@@ -60,7 +60,7 @@ type DataFlowTester struct {
 	T      *testing.T
 	Name   string
 	Plugin core.PluginMeta
-	Log    core.Logger
+	Log    logger.Logger
 }
 
 // NewDataFlowTester create a *DataFlowTester to help developer test their subtasks data flow

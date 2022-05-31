@@ -19,6 +19,7 @@ package main // must be main for plugin entry point
 
 import (
 	"fmt"
+	"github.com/apache/incubator-devlake/logger"
 	"net/http"
 	"time"
 
@@ -43,7 +44,7 @@ var _ core.Migratable = (*Jira)(nil)
 
 type Jira struct{}
 
-func (plugin Jira) Init(config *viper.Viper, logger core.Logger, db *gorm.DB) error {
+func (plugin Jira) Init(config *viper.Viper, logger logger.Logger, db *gorm.DB) error {
 	api.Init(config, logger, db)
 	return nil
 }

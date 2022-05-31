@@ -19,6 +19,7 @@ package runner
 
 import (
 	"fmt"
+	"github.com/apache/incubator-devlake/logger"
 	"github.com/apache/incubator-devlake/migration"
 	"io/fs"
 	"path/filepath"
@@ -31,7 +32,7 @@ import (
 )
 
 // LoadPlugins load plugins from local directory
-func LoadPlugins(pluginsDir string, config *viper.Viper, logger core.Logger, db *gorm.DB) error {
+func LoadPlugins(pluginsDir string, config *viper.Viper, logger logger.Logger, db *gorm.DB) error {
 	walkErr := filepath.WalkDir(pluginsDir, func(path string, d fs.DirEntry, err error) error {
 		if err != nil {
 			return err

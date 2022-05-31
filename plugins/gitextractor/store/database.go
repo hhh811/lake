@@ -18,8 +18,8 @@ limitations under the License.
 package store
 
 import (
+	"github.com/apache/incubator-devlake/logger"
 	"github.com/apache/incubator-devlake/models/domainlayer/code"
-	"github.com/apache/incubator-devlake/plugins/core"
 	"github.com/apache/incubator-devlake/plugins/helper"
 	"gorm.io/gorm"
 	"reflect"
@@ -30,10 +30,10 @@ const BathSize = 100
 type Database struct {
 	//db     *gorm.DB
 	driver *helper.BatchSaveDivider
-	log    core.Logger
+	log    logger.Logger
 }
 
-func NewDatabase(db *gorm.DB, log core.Logger) *Database {
+func NewDatabase(db *gorm.DB, log logger.Logger) *Database {
 	database := new(Database)
 	database.driver = helper.NewBatchSaveDivider(db, BathSize)
 	database.log = log

@@ -19,11 +19,11 @@ package runner
 
 import (
 	"fmt"
+	"github.com/apache/incubator-devlake/logger"
 	"net/url"
 	"strings"
 	"time"
 
-	"github.com/apache/incubator-devlake/plugins/core"
 	"github.com/spf13/viper"
 	"gorm.io/driver/mysql"
 	"gorm.io/driver/postgres"
@@ -31,7 +31,7 @@ import (
 	gormLogger "gorm.io/gorm/logger"
 )
 
-func NewGormDb(config *viper.Viper, logger core.Logger) (*gorm.DB, error) {
+func NewGormDb(config *viper.Viper, logger logger.Logger) (*gorm.DB, error) {
 	dbLoggingLevel := gormLogger.Error
 	switch strings.ToLower(config.GetString("DB_LOGGING_LEVEL")) {
 	case "silent":

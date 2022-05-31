@@ -20,6 +20,7 @@ package parser
 import (
 	"context"
 	"fmt"
+	logger2 "github.com/apache/incubator-devlake/logger"
 
 	git "github.com/libgit2/git2go/v33"
 
@@ -36,7 +37,7 @@ const (
 
 type LibGit2 struct {
 	store      models.Store
-	logger     core.Logger
+	logger     logger2.Logger
 	ctx        context.Context     // for canceling
 	subTaskCtx core.SubTaskContext // for updating progress
 }

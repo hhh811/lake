@@ -18,6 +18,7 @@ limitations under the License.
 package main
 
 import (
+	"github.com/apache/incubator-devlake/logger"
 	"github.com/apache/incubator-devlake/plugins/refdiff/tasks"
 	"github.com/apache/incubator-devlake/runner"
 	"github.com/mitchellh/mapstructure"
@@ -43,7 +44,7 @@ func (plugin RefDiff) Description() string {
 	return "Calculate commits diff for specified ref pairs based on `commits` and `commit_parents` tables"
 }
 
-func (plugin RefDiff) Init(config *viper.Viper, logger core.Logger, db *gorm.DB) error {
+func (plugin RefDiff) Init(config *viper.Viper, logger logger.Logger, db *gorm.DB) error {
 	return nil
 }
 

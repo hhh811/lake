@@ -38,7 +38,7 @@ import (
 
 func RunTask(
 	cfg *viper.Viper,
-	logger core.Logger,
+	logger logger.Logger,
 	db *gorm.DB,
 	ctx context.Context,
 	progress chan core.RunningProgress,
@@ -116,7 +116,7 @@ func RunTask(
 
 func RunPluginTask(
 	cfg *viper.Viper,
-	logger core.Logger,
+	logger logger.Logger,
 	db *gorm.DB,
 	ctx context.Context,
 	name string,
@@ -146,7 +146,7 @@ func RunPluginTask(
 
 func RunPluginSubTasks(
 	cfg *viper.Viper,
-	logger core.Logger,
+	logger logger.Logger,
 	db *gorm.DB,
 	ctx context.Context,
 	name string,
