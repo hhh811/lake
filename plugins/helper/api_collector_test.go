@@ -206,6 +206,11 @@ func MockDB(t *testing.T) {
 	},
 	)
 
+	gr = gomonkey.ApplyMethod(reflect.TypeOf(&gorm.DB{}), "Count", func(db *gorm.DB, count *int64) (tx *gorm.DB) {
+		return db
+	},
+	)
+
 	gr = gomonkey.ApplyMethod(reflect.TypeOf(&gorm.DB{}), "Rows", func(db *gorm.DB) (*sql.Rows, error) {
 		return &sql.Rows{}, nil
 	},
