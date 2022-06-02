@@ -18,8 +18,6 @@ limitations under the License.
 package helper
 
 import (
-	"github.com/apache/incubator-devlake/config"
-	"github.com/apache/incubator-devlake/plugins/core"
 	"reflect"
 	"testing"
 
@@ -58,9 +56,7 @@ func TestMergeFieldsToConnection(t *testing.T) {
 	data["Password"] = "5-5"
 
 	err := mergeFieldsToConnection(v, data)
-	if err != nil {
-		return
-	}
+	assert.Nil(t, err)
 
 	assert.Equal(t, "4-4", v.Username)
 	assert.Equal(t, "2-2", v.Endpoint)
@@ -88,14 +84,11 @@ func TestDecryptAndEncrypt(t *testing.T) {
 	dataVal := reflect.ValueOf(v)
 	encKey := "test"
 	err := encryptField(dataVal, "Password", encKey)
-	if err != nil {
-		return
-	}
+	assert.Nil(t, err)
+
 	assert.NotEqual(t, "5", v.Password)
 	err = decryptField(dataVal, "Password", encKey)
-	if err != nil {
-		return
-	}
+	assert.Nil(t, err)
 
 	assert.Equal(t, "5", v.Password)
 
@@ -120,37 +113,17 @@ func TestDecryptConnection(t *testing.T) {
 		RemotelinkCommitShaPattern: "8",
 	}
 	encKey, err := getEncKey()
-	if err != nil {
-		return
-	}
+	assert.Nil(t, err)
+
 	dataVal := reflect.ValueOf(v)
 	err = encryptField(dataVal, "Password", encKey)
-	if err != nil {
-		return
-	}
+	assert.Nil(t, err)
+
 	encryptedPwd := v.Password
 	err = DecryptConnection(v, "Password")
-	if err != nil {
-		return
-	}
+	assert.Nil(t, err)
 	assert.NotEqual(t, encryptedPwd, v.Password)
 	assert.Equal(t, "5", v.Password)
-}
-
-func TestGetEncKey(t *testing.T) {
-	// encryptField
-	v := config.GetConfig()
-	encKey := v.GetString(core.EncodeKeyEnvStr)
-	str, err := getEncKey()
-	if err != nil {
-		return
-	}
-	if len(encKey) > 0 {
-		assert.Equal(t, encKey, str)
-	} else {
-		assert.NotEqual(t, 0, len(str))
-	}
-
 }
 
 func TestFirstFieldNameWithTag(t *testing.T) {
@@ -173,6 +146,6 @@ func TestFirstFieldNameWithTag(t *testing.T) {
 	}
 	dataVal := reflect.ValueOf(v)
 	dataType := reflect.Indirect(dataVal).Type()
-	fieldName := firstFieldNameWithTag(dataType, "encryptField")
+	fieldName := firstFieldNameWithTag(dataType, "encrypt")
 	assert.Equal(t, "Password", fieldName)
 }

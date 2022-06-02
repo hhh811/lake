@@ -35,7 +35,7 @@ const (
 
 func Proxy(input *core.ApiResourceInput) (*core.ApiResourceOutput, error) {
 	jiraConnection := &models.JiraConnection{}
-	err := helper.FindConnectionByInput(input, jiraConnection, db)
+	err := helper.GetConnectionByInputParam(input, jiraConnection, db)
 	if err != nil {
 		return nil, err
 	}

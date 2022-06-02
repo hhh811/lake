@@ -21,7 +21,7 @@ type BaseConnection struct {
 
 type BasicAuth struct {
 	Username string `mapstructure:"username" validate:"required" json:"username"`
-	Password string `mapstructure:"password" validate:"required" json:"password" encryptField:"yes"`
+	Password string `mapstructure:"password" validate:"required" json:"password" encrypt:"yes"`
 }
 
 func (ba BasicAuth) GetEncodedToken() string {
@@ -29,7 +29,7 @@ func (ba BasicAuth) GetEncodedToken() string {
 }
 
 type AccessToken struct {
-	Token string `mapstructure:"token" validate:"required" json:"token" encryptField:"yes"`
+	Token string `mapstructure:"token" validate:"required" json:"token" encrypt:"yes"`
 }
 
 type RestConnection struct {
@@ -39,12 +39,12 @@ type RestConnection struct {
 	RateLimit      int    `comment:"api request rate limt per hour" json:"rateLimit"`
 }
 
-// RefreshAndSaveConnection populate from request input into connection which come from REST functions to connection struct and save to DB
+// Create populate from request input into connection which come from REST functions to connection struct and save to DB
 // and only change value which `data` has
 // mergeFieldsToConnection merges fields from data
 // `connection` is the pointer of a plugin connection
 // `data` is http request input param
-func RefreshAndSaveConnection(connection interface{}, data map[string]interface{}, db *gorm.DB) error {
+func Create(data map[string]interface{}, connection interface{}, db *gorm.DB) error {
 	var err error
 	// update fields from request body
 	err = mergeFieldsToConnection(connection, data)
@@ -60,6 +60,20 @@ func RefreshAndSaveConnection(connection interface{}, data map[string]interface{
 	return nil
 }
 
+func Patch(input *core.ApiResourceInput, connection interface{}, db *gorm.DB) error {
+	err := GetConnectionByInputParam(input.Params, connection, db)
+	if err != nil {
+		return err
+	}
+
+	err = Create(input.Body, connection, db)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
 func saveToDb(connection interface{}, db *gorm.DB) error {
 	dataVal := reflect.ValueOf(connection)
 	if dataVal.Kind() != reflect.Ptr {
@@ -70,7 +84,7 @@ func saveToDb(connection interface{}, db *gorm.DB) error {
 		return err
 	}
 	dataType := reflect.Indirect(dataVal).Type()
-	fieldName := firstFieldNameWithTag(dataType, "encryptField")
+	fieldName := firstFieldNameWithTag(dataType, "encrypt")
 	plainPwd := ""
 	err = encryptField(dataVal, fieldName, encKey)
 	if err != nil {
@@ -125,14 +139,14 @@ func getEncKey() (string, error) {
 	return encKey, nil
 }
 
-// FindConnectionByInput finds connection from db  by parsing request input and decrypt it
-func FindConnectionByInput(input *core.ApiResourceInput, connection interface{}, db *gorm.DB) error {
+// GetConnectionByInputParam finds connection from db  by parsing request input and decrypt it
+func GetConnectionByInputParam(data map[string]string, connection interface{}, db *gorm.DB) error {
 	dataVal := reflect.ValueOf(connection)
 	if dataVal.Kind() != reflect.Ptr {
 		return fmt.Errorf("connection is not a pointer")
 	}
 
-	id, err := GetConnectionIdByInputParam(input)
+	id, err := GetConnectionIdByInputParam(data)
 	if err != nil {
 		return fmt.Errorf("invalid connectionId")
 	}
@@ -145,14 +159,14 @@ func FindConnectionByInput(input *core.ApiResourceInput, connection interface{},
 
 	dataType := reflect.Indirect(dataVal).Type()
 
-	fieldName := firstFieldNameWithTag(dataType, "encryptField")
+	fieldName := firstFieldNameWithTag(dataType, "encrypt")
 	return decryptField(dataVal, fieldName, "")
 
 }
 
 // GetConnectionIdByInputParam gets connectionId by parsing request input
-func GetConnectionIdByInputParam(input *core.ApiResourceInput) (uint64, error) {
-	connectionId := input.Params["connectionId"]
+func GetConnectionIdByInputParam(data map[string]string) (uint64, error) {
+	connectionId := data["connectionId"]
 	if connectionId == "" {
 		return 0, fmt.Errorf("missing connectionId")
 	}
@@ -186,7 +200,7 @@ func DecryptConnection(connection interface{}, fieldName string) error {
 	}
 	if len(fieldName) == 0 {
 		dataType := reflect.Indirect(dataVal).Type()
-		fieldName = firstFieldNameWithTag(dataType, "encryptField")
+		fieldName = firstFieldNameWithTag(dataType, "encrypt")
 	}
 	return decryptField(dataVal, fieldName, encKey)
 }
